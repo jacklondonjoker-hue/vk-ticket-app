@@ -33,11 +33,11 @@
             cursor: pointer;
             text-decoration: none;
             box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
-            /* Убираем синюю подсветку при нажатии на мобильных */
-            -webkit-tap-highlight-color: transparent; 
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s;
         }
         .btn:active {
-            transform: scale(0.98); /* Эффект нажатия */
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -48,33 +48,31 @@
     <button class="btn" onclick="openWidget()">КУПИТЬ БИЛЕТ</button>
 
     <script>
-        // Функция инициализации ВК
-        function initVK() {
+        // 1. Инициализация VK Bridge (сообщаем ВК, что приложение загрузилось)
+        window.addEventListener('load', function() {
             if (typeof vkBridge !== 'undefined') {
                 vkBridge.send('VKWebAppInit')
-                    .then(data => {
-                        console.log('VK Bridge Init Success', data);
-                    })
-                    .catch(error => {
-                        console.error('VK Bridge Init Failed', error);
-                    });
-            } else {
-                console.error('vkBridge не найден. Библиотека не загрузилась.');
+                    .then(() => console.log('VK Bridge Init Success'))
+                    .catch((e) => console.error('VK Bridge Init Error', e));
             }
-        }
+        });
 
-        // Ждем полной загрузки страницы, затем запускаем
-        window.addEventListener('load', initVK);
-
-        // Функция открытия ссылки
+        // 2. Функция открытия ссылки
         function openWidget() {
             var url = "https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp";
             
-            vkBridge.send("VKWebAppOpenUrl", { url: url })
-                .catch(error => {
-                    // Если вдруг не сработал Bridge (например, открыли в браузере), пробуем обычное открытие
-                    window.open(url, '_blank');
-                });
+            // Проверяем: если vkBridge доступен (мы в ВК), используем его
+            if (typeof vkBridge !== 'undefined' && vkBridge.isWebView()) {
+                vkBridge.send("VKWebAppOpenUrl", { url: url })
+                    .catch((err) => {
+                        // Если ошибка в Bridge, пробуем открыть как обычную ссылку
+                        console.error(err);
+                        window.location.href = url;
+                    });
+            } else {
+                // Если мы просто в браузере — переходим по ссылке напрямую
+                window.location.href = url;
+            }
         }
     </script>
 
