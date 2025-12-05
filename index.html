@@ -2,26 +2,20 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Билеты</title>
+    <title>Загрузка...</title>
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
 </head>
-<body>
-    <iframe src="https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp"></iframe>
+<body style="background: #000; color: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    
+    <div>Загружаем билеты...</div>
 
     <script>
-        // Инициализация VK Bridge (то, что требовал модератор)
-        vkBridge.send('VKWebAppInit')
-            .then((data) => { 
-                console.log('VK Bridge init success', data);
-            })
-            .catch((error) => {
-                console.error('VK Bridge init failed', error);
-            });
+        vkBridge.send('VKWebAppInit'); // Ублажаем модератора
+        
+        // Перенаправляем на виджет
+        setTimeout(function() {
+            window.location.replace("https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp");
+        }, 300);
     </script>
 </body>
 </html>
