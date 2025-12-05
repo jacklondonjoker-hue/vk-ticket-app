@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Билеты</title>
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-
+    
     <script type="text/javascript">
       !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src='https://vk.com/js/api/openapi.js?169',t.onload=function(){VK.Retargeting.Init("3724195"),VK.Retargeting.Hit()},document.head.appendChild(t)}();
     </script>
     <noscript><img src="https://vk.com/rtrg?p=3724195" style="position:fixed; left:-999px;" alt=""/></noscript>
+
     <style>
         body {
             background-color: #000000;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,44 +24,33 @@
             margin: 0;
             text-align: center;
         }
-        .btn {
+        /* Делаем ссылку похожей на кнопку */
+        .link-btn {
             background: #FFCC00;
             color: #000;
             padding: 20px 40px;
             font-size: 20px;
             font-weight: bold;
             border-radius: 12px;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            margin-top: 20px;
+            text-decoration: none; /* Убираем подчеркивание */
             display: inline-block;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <h1>Покупка билетов</h1>
-    <p>Нажмите кнопку ниже, чтобы выбрать места</p>
+    <p>Нажмите кнопку ниже:</p>
     
-    <button class="btn" onclick="openAfisha()">Купить билет</button>
+    <a href="https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp" class="link-btn" target="_blank">
+        Купить билет
+    </a>
 
     <script>
-        // Инициализация
+        // Сообщаем ВК, что мы тут (для модерации)
         vkBridge.send('VKWebAppInit');
-
-        function openAfisha() {
-            // Отправляем событие клика в пиксель
-            try { VK.Retargeting.Event('click_buy_button'); } catch(e) {}
-
-            var link = "https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp";
-            
-            // Открываем ссылку
-            vkBridge.send("VKWebAppOpenUrl", { url: link })
-                .catch(function() {
-                    window.open(link, '_blank');
-                });
-        }
     </script>
+
 </body>
 </html>
