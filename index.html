@@ -2,30 +2,86 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirect to Afisha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Билеты 2.0</title>
+
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 { margin-bottom: 30px; font-size: 24px; }
+        .btn {
+            display: block;
+            background: #FFCC00;
+            color: #000;
+            padding: 20px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+            /* Убираем синюю подсветку при нажатии на мобильных */
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .btn:active {
+            transform: scale(0.98); /* Эффект нажатия */
+        }
+    </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif;">
-        <p>Переходим на Афишу...</p>
-    </div>
+
+    <h1>Покупка билетов v2.0</h1>
+    
+    <button class="btn" onclick="openWidget()">КУПИТЬ БИЛЕТ</button>
 
     <script>
-        // 1. Инициализируем (запускаем) VK Bridge
-        vkBridge.send('VKWebAppInit')
-            .then(() => {
-                console.log('VK Bridge init success');
-                
-                // 2. Сразу после запуска просим открыть ссылку
-                // Замените ссылку ниже на вашу ссылку Яндекс.Афиши
-                vkBridge.send('VKWebAppOpenUrl', {
-                    url: 'https://afisha.yandex.ru' 
+        // Функция инициализации ВК
+        function initVK() {
+            if (typeof vkBridge !== 'undefined') {
+                vkBridge.send('VKWebAppInit')
+                    .then(data => {
+                        console.log('VK Bridge Init Success', data);
+                    })
+                    .catch(error => {
+                        console.error('VK Bridge Init Failed', error);
+                    });
+            } else {
+                console.error('vkBridge не найден. Библиотека не загрузилась.');
+            }
+        }
+
+        // Ждем полной загрузки страницы, затем запускаем
+        window.addEventListener('load', initVK);
+
+        // Функция открытия ссылки
+        function openWidget() {
+            var url = "https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp";
+            
+            vkBridge.send("VKWebAppOpenUrl", { url: url })
+                .catch(error => {
+                    // Если вдруг не сработал Bridge (например, открыли в браузере), пробуем обычное открытие
+                    window.open(url, '_blank');
                 });
-            })
-            .catch((error) => {
-                console.error('Ошибка инициализации:', error);
-            });
+        }
     </script>
+
+    <script type="text/javascript">
+      !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src='https://vk.com/js/api/openapi.js?169',t.onload=function(){VK.Retargeting.Init("3724195"),VK.Retargeting.Hit()},document.head.appendChild(t)}();
+    </script>
+    <noscript><img src="https://vk.com/rtrg?p=3724195" style="position:fixed; left:-999px;" alt=""/></noscript>
+
 </body>
 </html>
