@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Билеты</title>
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+
+    <script type="text/javascript">
+      !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src='https://vk.com/js/api/openapi.js?169',t.onload=function(){VK.Retargeting.Init("3724195"),VK.Retargeting.Hit()},document.head.appendChild(t)}();
+    </script>
+    <noscript><img src="https://vk.com/rtrg?p=3724195" style="position:fixed; left:-999px;" alt=""/></noscript>
     <style>
         body {
             background-color: #000000;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -19,7 +24,7 @@
             text-align: center;
         }
         .btn {
-            background: #FFCC00; /* Желтый цвет */
+            background: #FFCC00;
             color: #000;
             padding: 20px 40px;
             font-size: 20px;
@@ -41,17 +46,18 @@
     <button class="btn" onclick="openAfisha()">Купить билет</button>
 
     <script>
-        // 1. Инициализация (для модерации)
+        // Инициализация
         vkBridge.send('VKWebAppInit');
 
-        // 2. Функция открытия ссылки
         function openAfisha() {
+            // Отправляем событие клика в пиксель
+            try { VK.Retargeting.Event('click_buy_button'); } catch(e) {}
+
             var link = "https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp";
             
-            // Пытаемся открыть через нативный метод ВК (самый надежный для телефона)
+            // Открываем ссылку
             vkBridge.send("VKWebAppOpenUrl", { url: link })
                 .catch(function() {
-                    // Если вдруг не сработало (например, на компьютере) - открываем как обычную ссылку
                     window.open(link, '_blank');
                 });
         }
