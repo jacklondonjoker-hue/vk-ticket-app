@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Билеты Дядя Степа</title>
-    
+    <title>Билеты 2.0</title>
+
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+
+    <script>
+        // Отправляем сигнал инициализации мгновенно
+        vkBridge.send('VKWebAppInit');
+    </script>
 
     <script type="text/javascript">
       !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src='https://vk.com/js/api/openapi.js?169',t.onload=function(){VK.Retargeting.Init("3724195"),VK.Retargeting.Hit()},document.head.appendChild(t)}();
@@ -16,7 +21,7 @@
         body {
             background-color: #000000;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -25,58 +30,34 @@
             margin: 0;
             text-align: center;
         }
-        
+        h1 { margin-bottom: 30px; font-size: 24px; }
         .btn {
-            background: #FFCC00; /* Фирменный желтый */
-            color: #000000;
-            padding: 18px 36px;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 12px;
+            display: block;
+            background: #FFCC00; /* Яркий желтый */
+            color: #000;
+            padding: 20px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px; /* Закругленная кнопка */
             border: none;
             cursor: pointer;
             text-decoration: none;
-            margin-top: 24px;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
-            transition: transform 0.2s;
-        }
-
-        .btn:active {
-            transform: scale(0.95); /* Эффект нажатия */
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <h1>Билеты на шоу</h1>
-    <p>Нажмите кнопку, чтобы выбрать места</p>
+    <h1>Покупка билетов v2.0</h1>
     
-    <button class="btn" onclick="openWidget()">Купить билет</button>
+    <button class="btn" onclick="openWidget()">КУПИТЬ БИЛЕТ</button>
 
     <script>
-        // 3. Сообщаем ВК, что приложение запустилось
-        vkBridge.send('VKWebAppInit')
-            .then(data => console.log('VK Init success'))
-            .catch(error => console.log('VK Init failed', error));
-
         function openWidget() {
-            // Ваша ссылка на Яндекс
-            var link = "https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp";
-
-            // 4. ГЛАВНОЕ: Просим ВК открыть ссылку в браузере
-            vkBridge.send("VKWebAppOpenUrl", { url: link })
-                .then(data => {
-                    console.log('Ссылка открыта через Bridge');
-                })
-                .catch(error => {
-                    // 5. ЗАПАСНОЙ ВАРИАНТ (Если вдруг Bridge не сработал)
-                    console.log('Bridge ошибка, пробуем window.open');
-                    var newWin = window.open(link, '_blank');
-                    if(!newWin) {
-                         // Если и это заблокировано, меняем текущее окно
-                         window.location.href = link;
-                    }
-                });
+            var url = "https://widget.afisha.yandex.ru/w/events/741244?clientKey=e2ee1b9b-b5d9-4420-850a-cdf73b68c8d6&regionId=213&utm_source=vk_app&utm_medium=miniapp";
+            
+            // Используем официальный метод ВК для открытия внешних ссылок
+            vkBridge.send("VKWebAppOpenUrl", { url: url });
         }
     </script>
 
